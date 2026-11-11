@@ -1,0 +1,37 @@
+# Render Blueprint: Moodle web service + managed PostgreSQL
+services:
+  - type: web
+    name: moodle
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: standard            # 2 GB RAM; don't go lower for SCORM
+    region: ohio
+    healthCheckPath: /login/index.php
+    numInstances: 1           # required with a persistent disk
+    disk:
+      name: moodledata
+      mountPath: /var/moodledata
+      sizeGB: 20
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: moodle-db
+          property: connectionString
+      - key: MOODLE_WWWROOT
+        sync: false           # set to your final URL, e.g. https://learn.yourdomain.org
+      - key: MOODLE_ADMIN_PASSWORD
+        sync: false           # used only on first install
+      - key: MOODLE_ADMIN_EMAIL
+        sync: false
+      - key: MOODLE_SITE_NAME
+        value: Learning Portal
+      - key: MOODLE_SITE_SHORTNAME
+        value: Learning
+
+databases:
+  - name: moodle-db
+    databaseName: moodle
+    user: moodle
+    plan: basic-1gb
+    region: ohio
+    postgresMajorVersion: "16"
