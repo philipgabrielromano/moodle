@@ -3,7 +3,10 @@
 set -euo pipefail
 
 : "${DATABASE_URL:?DATABASE_URL is not set}"
-: "${MOODLE_WWWROOT:?MOODLE_WWWROOT is not set (e.g. https://learn.example.org)}"
+if [ -z "${MOODLE_WWWROOT:-}" ] && [ -z "${RENDER_EXTERNAL_URL:-}" ]; then
+    echo "Neither MOODLE_WWWROOT nor RENDER_EXTERNAL_URL is set; cannot determine the site URL."; exit 1
+fi
+echo "Site URL: ${MOODLE_WWWROOT:-$RENDER_EXTERNAL_URL}"
 
 MOODLE_DIR=/var/www/moodle
 DATAROOT="${MOODLE_DATAROOT:-/var/moodledata}"

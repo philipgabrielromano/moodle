@@ -7,10 +7,16 @@ One container runs Apache + PHP and Moodle's cron (via supervisord). Uploaded fi
 1. Push this folder to a GitHub repo.
 2. In Render: **New → Blueprint**, pick the repo. Render reads `render.yaml`.
 3. When prompted, fill in:
-   - `MOODLE_WWWROOT` — the exact public URL (no trailing slash). If you'll use a custom domain, set that now; changing it later means updating stored URLs.
    - `MOODLE_ADMIN_PASSWORD` — strong password for the local `admin` account (8+ chars, mixed case, digit, symbol, or Moodle's install rejects it).
    - `MOODLE_ADMIN_EMAIL`
-4. First deploy installs the database (a few minutes). Log in at `/login/index.php` as `admin`.
+4. First deploy installs the database (a few minutes). The site uses the `https://<name>.onrender.com` address Render assigns. Log in at `/login/index.php` as `admin`.
+
+### Custom domain later
+
+1. Add the domain in Render (service → Settings → Custom Domains) and set up DNS.
+2. Add env var `MOODLE_WWWROOT` = `https://learn.yourdomain.org` (no trailing slash) and redeploy.
+3. Fix links stored in course content: Site administration → Development → **Search and replace**, old URL → new URL.
+4. Update the redirect URI in the Entra app registration to the new domain.
 
 ## Microsoft 365 plugin suite
 

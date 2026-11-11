@@ -18,8 +18,9 @@ $CFG->dboptions = [
     'dbsocket'  => false,
 ];
 
-// Site URL — must be the final public URL (custom domain if you use one)
-$CFG->wwwroot  = rtrim(getenv('MOODLE_WWWROOT'), '/');
+// Site URL: MOODLE_WWWROOT if set (e.g. a custom domain), otherwise the
+// https://<name>.onrender.com address Render provides automatically
+$CFG->wwwroot  = rtrim(getenv('MOODLE_WWWROOT') ?: getenv('RENDER_EXTERNAL_URL'), '/');
 
 // Persistent files live on the Render disk; local caches stay in the container for speed
 $CFG->dataroot      = getenv('MOODLE_DATAROOT') ?: '/var/moodledata';

@@ -17,8 +17,6 @@ services:
         fromDatabase:
           name: moodle-db
           property: connectionString
-      - key: MOODLE_WWWROOT
-        sync: false           # set to your final URL, e.g. https://learn.yourdomain.org
       - key: MOODLE_ADMIN_PASSWORD
         sync: false           # used only on first install
       - key: MOODLE_ADMIN_EMAIL
